@@ -1,0 +1,41 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ResourceGroups": {
+            "type": "array",
+            "metadata": {
+                "description": "Resource group names"
+            },
+            "defaultValue": [
+                {
+                    "Name":"rg-ilb-eus",
+                    "Location":"eastus"
+                }
+            ]
+        },
+        "resourceTags": {
+            "type": "object",
+            "defaultValue": {
+                "Demo": "InternalLoadBalancer"
+            }
+        }
+      },
+    "variables": {  },
+    "functions": [  ],
+    "resources": [
+        {
+            "comments": "-----------------RESOURCE GROUPS-------------------",
+            "name": "[parameters('ResourceGroups')[copyIndex()].name]",
+            "type": "microsoft.resources/ResourceGroups",
+            "apiVersion": "2019-10-01",
+            "location": "[parameters('ResourceGroups')[copyIndex()].Location]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {},
+            "copy": {
+                "name": "rgLoop",
+                "count": "[length(parameters('ResourceGroups'))]"
+            }
+        }
+    ]
+  }
